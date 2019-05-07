@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Components</string>
+    <string name="default_title">Title</string>
+    <string name="default_description">Description</string>
+</resources>

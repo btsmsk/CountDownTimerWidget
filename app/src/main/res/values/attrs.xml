@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CountDownTimerView">
+        <attr name="timeTextSize" format="float"/>
+        <attr name="timeTextColor" format="integer"/>
+        <attr name="descriptionText" format="string"/>
+        <attr name="descriptionTextColor" format="integer"/>
+        <attr name="descriptionTextSize" format="float"/>
+        <attr name="innerCircleThickness" format="dimension"/>
+        <attr name="innerCircleColor" format="integer"/>
+        <attr name="innerCircleRatio" format="float"/>
+        <attr name="outerCircleThickness" format="dimension"/>
+        <attr name="outerCircleColor" format="integer"/>
+        <attr name="outerCircleRatio" format="float"/>
+        <attr name="clockwise" format="boolean"/>
+        <attr name="animation" format="boolean"/>
+    </declare-styleable>
+</resources>
