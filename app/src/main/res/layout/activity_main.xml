@@ -11,13 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:timeTextSize="32"
-            app:animation="true"
-            app:clockwise="false"
-            app:timeTextColor="@color/colorRed"
-            app:innerCircleColor="@color/colorRed"
-            app:outerCircleColor="@color/grey">
+            app:layout_constraintTop_toTopOf="parent">
     </com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,8 +18,6 @@ class MainActivity : AppCompatActivity() {
         countDownTimerView = this.findViewById(R.id.countDownTimerView)
         countDownTimerView.startTimer(
             timerCount = 30,
-            animation = true,
-            runClockwise = true,
             onCountDownTimerStarted = {
                 Log.d("Timer: ", "Started")
             },
@@ -29,6 +27,5 @@ class MainActivity : AppCompatActivity() {
             onCountDownTimerStopped = {
                 Log.d("Timer: ", "Stopped")
             })
-
     }
 }
