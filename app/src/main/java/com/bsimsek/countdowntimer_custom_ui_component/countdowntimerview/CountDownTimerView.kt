@@ -5,16 +5,15 @@ import android.graphics.PorterDuff
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import android.animation.ObjectAnimator
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import com.bsimsek.countdowntimer_custom_ui_component.R
 
-data class CountDownTimerViewDataModel(
+data class CountDownTimerViewAttributeData(
     val timeTextSize: Float? = null,
     val timeTextColor: Int? = null,
     val descriptionText: String? = null,
@@ -26,32 +25,49 @@ data class CountDownTimerViewDataModel(
     val animation: Boolean? = null
 )
 
-private fun readAttributes(context: Context, attrs: AttributeSet?): CountDownTimerViewDataModel {
-    attrs ?: return CountDownTimerViewDataModel()
+private fun readAttributes(context: Context, attrs: AttributeSet?): CountDownTimerViewAttributeData {
+    attrs ?: return CountDownTimerViewAttributeData()
     val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.CountDownTimerView, 0, 0)
+    val timeTextSize: Float?
+    val timeTextColor: Int?
+    val descriptionText: String?
+    val descriptionTextColor: Int?
+    val descriptionTextSize: Float?
+    val innerCircleColor: Int?
+    val outerCircleColor: Int?
+    val clockwise: Boolean?
+    val animation: Boolean?
     return try {
-        val timeTextSize = attributes.getFloat(R.styleable.CountDownTimerView_timeTextSize, 40F)
-        val timeTextColor = attributes.getResourceId(R.styleable.CountDownTimerView_timeTextColor, R.color.greyDark)
-        val descriptionText =
-            attributes.getString(R.styleable.CountDownTimerView_descriptionText) ?: "Default Description"
-        val descriptionTextColor =
-            attributes.getResourceId(R.styleable.CountDownTimerView_descriptionTextColor, R.color.grey)
-        val descriptionTextSize = attributes.getFloat(R.styleable.CountDownTimerView_descriptionTextSize, 30F)
-        val innerCircleColor = attributes.getResourceId(R.styleable.CountDownTimerView_innerCircleColor, R.color.grey)
-        val outerCircleColor =
-            attributes.getResourceId(R.styleable.CountDownTimerView_outerCircleColor, R.color.colorYellow)
-        val clockwise = attributes.getBoolean(R.styleable.CountDownTimerView_clockwise, false)
-        val animation = attributes.getBoolean(R.styleable.CountDownTimerView_animation, false)
+        attributes.run {
+            timeTextSize =
+                getDimension(R.styleable.CountDownTimerView_timeTextSize, resources.getDimension(R.dimen.font_xxlarge))
+            timeTextColor = getResourceId(R.styleable.CountDownTimerView_timeTextColor, R.color.colorPrimary)
+            descriptionText = getString(R.styleable.CountDownTimerView_descriptionText)
+            descriptionTextColor = getResourceId(R.styleable.CountDownTimerView_descriptionTextColor, R.color.greyDark)
+            descriptionTextSize =
+                getDimension(
+                    R.styleable.CountDownTimerView_descriptionTextSize,
+                    resources.getDimension(R.dimen.font_large)
+                )
+            innerCircleColor = getResourceId(R.styleable.CountDownTimerView_innerCircleColor, R.color.grey)
+            outerCircleColor = getResourceId(R.styleable.CountDownTimerView_outerCircleColor, R.color.colorPrimary)
+            clockwise = getBoolean(R.styleable.CountDownTimerView_clockwise, false)
+            animation = getBoolean(R.styleable.CountDownTimerView_animation, true)
+        }
 
-        return CountDownTimerViewDataModel(
-            timeTextSize, timeTextColor,
-            descriptionText, descriptionTextColor, descriptionTextSize,
-            innerCircleColor, outerCircleColor,
-            clockwise, animation
+        return CountDownTimerViewAttributeData(
+            timeTextSize,
+            timeTextColor,
+            descriptionText,
+            descriptionTextColor,
+            descriptionTextSize,
+            innerCircleColor,
+            outerCircleColor,
+            clockwise,
+            animation
         )
-
     } catch (e: Exception) {
-        CountDownTimerViewDataModel()
+        CountDownTimerViewAttributeData()
     } finally {
         attributes?.recycle()
     }
@@ -59,7 +75,7 @@ private fun readAttributes(context: Context, attrs: AttributeSet?): CountDownTim
 
 class CountDownTimerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), OnCountDownTimerEventListener {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private lateinit var progressBarCircle: ProgressBar
     private lateinit var textViewTime: TextView
@@ -67,9 +83,12 @@ class CountDownTimerView @JvmOverloads constructor(
     private lateinit var timer: CountDownTimer
     private var timerCount: Long = 0L
     private var remainingTimeSecond: Long = 0L
-    private var countDownTimerEventListener: OnCountDownTimerEventListener? = null
     private lateinit var animation: ObjectAnimator
     private var animationAllowed = false
+    private var runClockWise = false
+    private var _onCountDownTimerStarted: (() -> Unit)? = null
+    private var _onCountDownTimerStopped: (() -> Unit)? = null
+    private var _onCountDownTimerRunning: ((remainingTime: Long) -> Unit)? = null
 
     init {
         initViews()
@@ -83,6 +102,9 @@ class CountDownTimerView @JvmOverloads constructor(
         textViewDescription = this.findViewById(R.id.textViewDescription)
     }
 
+    /*
+     * set attributes to view data
+     */
     private fun setAttributes(context: Context, attrs: AttributeSet?) {
         val data = readAttributes(context, attrs)
 
@@ -90,11 +112,11 @@ class CountDownTimerView @JvmOverloads constructor(
             textViewDescription.apply {
                 text = descriptionText
                 setTextColor(ContextCompat.getColor(context, descriptionTextColor!!))
-                textSize = descriptionTextSize!!
+                textSize = descriptionTextSize!! / resources.displayMetrics.scaledDensity
             }
 
             textViewTime.apply {
-                textSize = timeTextSize!!
+                textSize = timeTextSize!! / resources.displayMetrics.scaledDensity
                 setTextColor(ContextCompat.getColor(context, timeTextColor!!))
             }
 
@@ -117,6 +139,9 @@ class CountDownTimerView @JvmOverloads constructor(
         }
     }
 
+    /*
+    * Set progress bar initial values
+    */
     private fun setProgressBarValues() {
         progressBarCircle.apply {
             max = timerCount.toInt() * 1000
@@ -124,47 +149,68 @@ class CountDownTimerView @JvmOverloads constructor(
         }
     }
 
+    /*
+     * Set the animation to progress bar
+     * @param pb: proggress bar which will be added animation
+     * @param progressTo : duration time that aanimation will continue
+     */
     private fun setProgressAnimate(pb: ProgressBar, progressTo: Int) {
         animation = ObjectAnimator.ofInt(pb, "progress", pb.progress, 0)
         animation.apply {
             setAutoCancel(true)
             duration = progressTo.toLong()
-            interpolator = DecelerateInterpolator()
+            interpolator = LinearInterpolator()
             start()
         }
     }
 
+    /*
+     * Change the working direction of progress bar
+     */
     private fun rotateToClockWise() {
         progressBarCircle.apply {
-            layoutDirection = View.LAYOUT_DIRECTION_RTL
-            rotation = 90F
+            max = timerCount.toInt() * 1000
+            progress = timerCount.toInt() * 1000
         }
     }
 
-    private fun stopCountDownTimer() {
-        timer.cancel()
-    }
-
-    fun startTimer(timerCount: Long, animation: Boolean = animationAllowed, runClockwise: Boolean = false) {
+    /*
+     * Set start timer count and start the Count Down Timer.
+     * @param timerCount: timer length value
+     * @param animtion: true -> progress run with animation
+     *                  false -> progress run standard
+     * @param runClockwise: progress running direction
+     */
+    fun startTimer(
+        timerCount: Long,
+        animation: Boolean = animationAllowed,
+        runClockwise: Boolean = runClockWise,
+        onCountDownTimerStarted: (() -> Unit)? = null,
+        onCountDownTimerStopped: (() -> Unit)? = null,
+        onCountDownTimerRunning: ((remainingTime: Long) -> Unit)? = null
+    ) {
         this.timerCount = timerCount
         this.animationAllowed = animation
+        this._onCountDownTimerStarted = onCountDownTimerStarted
+        this._onCountDownTimerStopped = onCountDownTimerStopped
+        this._onCountDownTimerRunning = onCountDownTimerRunning
         if (runClockwise) {
             rotateToClockWise()
         }
         setProgressBarValues()
-        countDownTimerEventListener?.onCountDownTimerStarted()
+        _onCountDownTimerStarted?.invoke()
         timer = object : CountDownTimer(timerCount * 1000, 1000) {
             override fun onFinish() {
                 textViewTime.text = "0"
                 setProgressBarValues()
-                stopCountDownTimer()
-                countDownTimerEventListener?.onCountDownTimerStopped()
+                _onCountDownTimerStopped?.invoke()
+                stopTimer()
             }
 
             override fun onTick(millisUntilFinished: Long) {
                 remainingTimeSecond = millisUntilFinished / 1000
                 textViewTime.text = (remainingTimeSecond).toString()
-                countDownTimerEventListener?.onCountDownTimerRunning(remainingTimeSecond)
+                _onCountDownTimerRunning?.invoke(remainingTimeSecond)
                 if (animationAllowed) {
                     setProgressAnimate(progressBarCircle, millisUntilFinished.toInt())
                 } else {
@@ -174,38 +220,69 @@ class CountDownTimerView @JvmOverloads constructor(
         }.start()
     }
 
+    /*
+     * Stop count down timer
+     */
     fun stopTimer() {
-        stopCountDownTimer()
+        timer.cancel()
     }
 
+    /*
+     * Stop and restart count down timer
+     */
     fun resetTimer() {
+        stopTimer()
         if (animationAllowed) {
             animation.cancel()
         }
-        stopCountDownTimer()
-        startTimer(timerCount)
+        startTimer(
+            timerCount,
+            animationAllowed,
+            runClockWise,
+            _onCountDownTimerStarted,
+            _onCountDownTimerStopped,
+            _onCountDownTimerRunning
+        )
     }
 
+    /*
+     * To set the description text that under the timer view
+     */
     fun setDescriptionText(descriptionText: String?) {
         textViewDescription.text = descriptionText
     }
 
+    /*
+     * To change the description text color
+     */
     fun setDescriptionTextColor(descriptionTextColor: Int) {
         textViewDescription.setTextColor(descriptionTextColor)
     }
 
+    /*
+     * To change the description text size
+     */
     fun setDescriptionTextSize(descriptionTextSize: Float) {
-        textViewDescription.textSize = descriptionTextSize
+        textViewDescription.textSize = descriptionTextSize / resources.displayMetrics.scaledDensity
     }
 
+    /*
+     * To change the remaining time text size
+     */
     fun setTimeTextSize(timeTextSize: Float) {
-        textViewTime.textSize = timeTextSize
+        textViewTime.textSize = timeTextSize / resources.displayMetrics.scaledDensity
     }
 
+    /*
+     * To change the remaining time text color
+     */
     fun setTimeTextColor(timeTextColor: Int) {
         textViewTime.setTextColor(timeTextColor)
     }
 
+    /*
+     * To change the color of the progress background
+     */
     fun setProgressInnerCircleColor(innerCircleColor: Int) {
         progressBarCircle.background.setColorFilter(
             ContextCompat.getColor(context, innerCircleColor),
@@ -213,6 +290,9 @@ class CountDownTimerView @JvmOverloads constructor(
         )
     }
 
+    /*
+     * To change the color of the progress drawable
+     */
     fun setProgressOuterCircleColor(outerCircleColor: Int) {
         progressBarCircle.progressDrawable.setColorFilter(
             ContextCompat.getColor(context, outerCircleColor),
@@ -220,19 +300,8 @@ class CountDownTimerView @JvmOverloads constructor(
         )
     }
 
-    fun setCountDownTimerEventListener(onCountDownTimerEventListener: OnCountDownTimerEventListener) {
-        this.countDownTimerEventListener = onCountDownTimerEventListener
-    }
-
-    override fun onCountDownTimerStopped() {
-        this.countDownTimerEventListener?.onCountDownTimerStopped()
-    }
-
-    override fun onCountDownTimerRunning(remainingTime: Long) {
-        this.countDownTimerEventListener?.onCountDownTimerRunning(remainingTime)
-    }
-
-    override fun onCountDownTimerStarted() {
-        this.countDownTimerEventListener?.onCountDownTimerStarted()
+    override fun onDetachedFromWindow() {
+        stopTimer()
+        super.onDetachedFromWindow()
     }
 }

@@ -3,17 +3,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent" android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TextView
-            android:layout_width="wrap_content"
+    <com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView
+            android:id="@+id/countDownTimerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:timeTextSize="32"
+            app:animation="true"
+            app:clockwise="false"
+            app:timeTextColor="@color/colorRed"
+            app:innerCircleColor="@color/colorRed"
+            app:outerCircleColor="@color/grey">
+    </com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
