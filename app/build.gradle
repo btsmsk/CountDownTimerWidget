@@ -37,4 +37,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "androidx.work:work-runtime-ktx:2.0.1"
+    implementation 'com.github.bsimsek159:CountDownTimerView:0.1.0'
 }

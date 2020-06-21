@@ -6,12 +6,12 @@
         android:layout_width="match_parent" android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView
+    <com.bsimsek.countdowntimerwidget.CountDownTimerView
             android:id="@+id/countDownTimerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-    </com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView>
+    </com.bsimsek.countdowntimerwidget.CountDownTimerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

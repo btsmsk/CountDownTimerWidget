@@ -1,12 +1,9 @@
 package com.bsimsek.countdowntimer_custom_ui_component
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview.CountDownTimerView
+import androidx.appcompat.app.AppCompatActivity
+import com.bsimsek.countdowntimerwidget.CountDownTimerView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var countDownTimerView: CountDownTimerView
