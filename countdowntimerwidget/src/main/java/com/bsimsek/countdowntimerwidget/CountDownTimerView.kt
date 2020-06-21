@@ -1,4 +1,4 @@
-package com.bsimsek.countdowntimer_custom_ui_component.countdowntimerview
+package com.bsimsek.countdowntimerwidget
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -7,11 +7,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import android.animation.ObjectAnimator
 import android.view.animation.LinearInterpolator
-import com.bsimsek.countdowntimer_custom_ui_component.R
+import androidx.constraintlayout.widget.ConstraintLayout
 
 data class CountDownTimerViewAttributeData(
     val timeTextSize: Float? = null,
