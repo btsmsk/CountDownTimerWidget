@@ -3,6 +3,21 @@ Count Down timer UI component with progress bar
 
 <img width="500" alt="Screenshot_1563611909" src="https://user-images.githubusercontent.com/25201275/61576994-32a11f00-aaea-11e9-8033-f3465c6f3638.png">
 
+Step 1. Add the JitPack repository to your build file
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+ 
+Step 2. Add the dependency
+
+	dependencies {
+	        implementation 'com.github.bsimsek159:CountDownTimerView:0.1.1'
+	}
+
 ## USAGE
 
  - Initialize and start the count down timer with startTimer() method and timer state can be listened with this method
