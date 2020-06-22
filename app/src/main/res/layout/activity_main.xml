@@ -10,6 +10,11 @@
             android:id="@+id/countDownTimerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:clockwise="true"
+            app:animation="true"
+            app:timeTextColor="@color/colorRed"
+            app:innerCircleColor="@color/colorRed"
+            app:outerCircleColor="@color/grey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
     </com.bsimsek.countdowntimerwidget.CountDownTimerView>
