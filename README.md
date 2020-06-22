@@ -26,7 +26,7 @@ Step 2. Add the dependency
 
  - Some attributes can be setted from the .xml file to which it was added or you can change these attributes with related methods in the component class
  
- 
+ ```
 	<com.bsimsek.countdowntimerwidget.CountDownTimerView
             android:id="@+id/countDownTimerView"
             android:layout_width="match_parent"
@@ -38,6 +38,8 @@ Step 2. Add the dependency
             app:outerCircleColor="@color/grey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-    </com.bsimsek.countdowntimerwidget.CountDownTimerView>
+    	</com.bsimsek.countdowntimerwidget.CountDownTimerView>
+	
+    ```
 
 
