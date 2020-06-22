@@ -39,7 +39,5 @@ Step 2. Add the dependency
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
     	</com.bsimsek.countdowntimerwidget.CountDownTimerView>
-	
-    ```
 
 
