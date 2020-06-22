@@ -26,4 +26,18 @@ Step 2. Add the dependency
 
  - Some attributes can be setted from the .xml file to which it was added or you can change these attributes with related methods in the component class
  
- <img width="634" alt="Screen Shot 2019-07-20 at 12 41 12" src="https://user-images.githubusercontent.com/25201275/61577143-bdcee480-aaeb-11e9-8925-9bb0a8df35f3.png">
+ 
+	<com.bsimsek.countdowntimerwidget.CountDownTimerView
+            android:id="@+id/countDownTimerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:clockwise="true"
+            app:animation="true"
+            app:timeTextColor="@color/colorRed"
+            app:innerCircleColor="@color/colorRed"
+            app:outerCircleColor="@color/grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+    </com.bsimsek.countdowntimerwidget.CountDownTimerView>
+
+
