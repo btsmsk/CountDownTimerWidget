@@ -21,8 +21,18 @@ Step 2. Add the dependency
 ## USAGE
 
  - Initialize and start the count down timer with startTimer() method and timer state can be listened with this method
- 
-<img width="363" alt="Screen Shot 2019-07-20 at 12 28 59" src="https://user-images.githubusercontent.com/25201275/61577004-451b5880-aaea-11e9-90f9-c1bdc6ca6a80.png">
+
+        countDownTimerView.startTimer(
+            timerCount = 30,
+            onCountDownTimerStarted = {
+                Log.d("Timer: ", "Started")
+            },
+            onCountDownTimerRunning = {
+                Log.d("Timer: ", "Running $it")
+            },
+            onCountDownTimerStopped = {
+                Log.d("Timer: ", "Stopped")
+            })
 
  - Some attributes can be setted from the .xml file to which it was added or you can change these attributes with related methods in the component class
  
