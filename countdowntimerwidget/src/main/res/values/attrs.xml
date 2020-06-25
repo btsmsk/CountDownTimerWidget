@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CountDownTimerView">
+    <declare-styleable name="CountDownTimerWidget">
         <attr name="timeTextSize" format="float"/>
         <attr name="timeTextColor" format="integer"/>
         <attr name="descriptionText" format="string"/>

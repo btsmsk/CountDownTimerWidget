@@ -1,3 +1,5 @@
+package com.bsimsek.countdowntimerwidget
+
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.CountDownTimer
@@ -10,9 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import com.bsimsek.countdowntimerwidget.R
 
-data class CountDownTimerViewAttributeData(
+data class CountDownTimerWidgetAttributes(
     val timeTextSize: Float? = null,
     val timeTextColor: Int? = null,
     val descriptionText: String? = null,
@@ -28,10 +29,10 @@ data class CountDownTimerViewAttributeData(
 private fun readAttributes(
     context: Context,
     attrs: AttributeSet?
-): CountDownTimerViewAttributeData {
-    attrs ?: return CountDownTimerViewAttributeData()
+): CountDownTimerWidgetAttributes {
+    attrs ?: return CountDownTimerWidgetAttributes()
     val attributes =
-        context.theme.obtainStyledAttributes(attrs, R.styleable.CountDownTimerView, 0, 0)
+        context.theme.obtainStyledAttributes(attrs, R.styleable.CountDownTimerWidget, 0, 0)
     val timeTextSize: Float?
     val timeTextColor: Int?
     val descriptionText: String?
@@ -46,48 +47,48 @@ private fun readAttributes(
         attributes.run {
             timeTextSize =
                 getDimension(
-                    R.styleable.CountDownTimerView_timeTextSize,
+                    R.styleable.CountDownTimerWidget_timeTextSize,
                     resources.getDimension(R.dimen.font_xxlarge)
                 )
             timeTextColor =
-                getResourceId(R.styleable.CountDownTimerView_timeTextColor, R.color.colorPrimary)
-            descriptionText = getString(R.styleable.CountDownTimerView_descriptionText)
+                getResourceId(R.styleable.CountDownTimerWidget_timeTextColor, R.color.colorPrimary)
+            descriptionText = getString(R.styleable.CountDownTimerWidget_descriptionText)
             descriptionTextColor =
-                getResourceId(R.styleable.CountDownTimerView_descriptionTextColor, R.color.greyDark)
+                getResourceId(R.styleable.CountDownTimerWidget_descriptionTextColor, R.color.greyDark)
             descriptionTextSize =
                 getDimension(
-                    R.styleable.CountDownTimerView_descriptionTextSize,
+                    R.styleable.CountDownTimerWidget_descriptionTextSize,
                     resources.getDimension(R.dimen.font_large)
                 )
             innerCircleColor =
-                getResourceId(R.styleable.CountDownTimerView_innerCircleColor, R.color.grey)
+                getResourceId(R.styleable.CountDownTimerWidget_innerCircleColor, R.color.grey)
             outerCircleColor =
-                getResourceId(R.styleable.CountDownTimerView_outerCircleColor, R.color.colorPrimary)
-            ratio = getFloat(R.styleable.CountDownTimerView_ratio, 3f)
-            clockwise = getBoolean(R.styleable.CountDownTimerView_clockwise, false)
-            animation = getBoolean(R.styleable.CountDownTimerView_animation, true)
+                getResourceId(R.styleable.CountDownTimerWidget_outerCircleColor, R.color.colorPrimary)
+            ratio = getFloat(R.styleable.CountDownTimerWidget_ratio, 3f)
+            clockwise = getBoolean(R.styleable.CountDownTimerWidget_clockwise, false)
+            animation = getBoolean(R.styleable.CountDownTimerWidget_animation, true)
         }
 
-        return CountDownTimerViewAttributeData(
-            timeTextSize,
-            timeTextColor,
-            descriptionText,
-            descriptionTextColor,
-            descriptionTextSize,
-            innerCircleColor,
-            outerCircleColor,
-            ratio,
-            clockwise,
-            animation
+        return CountDownTimerWidgetAttributes(
+            timeTextSize = timeTextSize,
+            timeTextColor = timeTextColor,
+            descriptionText = descriptionText,
+            descriptionTextColor = descriptionTextColor,
+            descriptionTextSize = descriptionTextSize,
+            innerCircleColor = innerCircleColor,
+            outerCircleColor = outerCircleColor,
+            ratio = ratio,
+            clockwise = clockwise,
+            animation = animation
         )
     } catch (e: Exception) {
-        CountDownTimerViewAttributeData()
+        CountDownTimerWidgetAttributes()
     } finally {
         attributes?.recycle()
     }
 }
 
-class CountDownTimerView @JvmOverloads constructor(
+class CountDownTimerWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 

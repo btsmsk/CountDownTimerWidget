@@ -4,14 +4,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ProgressBar
             android:id="@+id/progressBarCircle"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:background="@drawable/drawable_progress_inner_circle"
             android:indeterminate="false"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             tools:text="190"
-            tools:textSize="40sp"
+            tools:textSize="20sp"
             tools:textColor="@color/greyDark"
             app:layout_constraintTop_toTopOf="@+id/progressBarCircle"
             app:layout_constraintBottom_toBottomOf="@+id/progressBarCircle"
@@ -44,7 +44,7 @@
             android:layout_centerInParent="true"
             tools:text="description"
             tools:textColor="@color/greyDark"
-            tools:textSize="22sp"
+            tools:textSize="10sp"
             app:layout_constraintTop_toBottomOf="@+id/progressBarCircle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
