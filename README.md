@@ -15,7 +15,7 @@ Step 1. Add the JitPack repository to your build file
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.bsimsek159:CountDownTimerView:0.1.1'
+	        implementation 'com.github.bsimsek159:CountDownTimerView:0.1.7'
 	}
 
 ## USAGE
@@ -39,13 +39,14 @@ Step 2. Add the dependency
  ```
 	<com.bsimsek.countdowntimerwidget.CountDownTimerView
             android:id="@+id/countDownTimerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:clockwise="true"
             app:animation="true"
+	    app:timeTextSize="@dimen/time_font_xl"
             app:timeTextColor="@color/colorRed"
             app:innerCircleColor="@color/colorRed"
-            app:outerCircleColor="@color/grey"
+            app:outerCircleColor="@color/colorGrey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
     	</com.bsimsek.countdowntimerwidget.CountDownTimerView>
