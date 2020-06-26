@@ -15,7 +15,7 @@ Step 1. Add the JitPack repository to your build file
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.bsimsek159:CountDownTimerView:0.1.7'
+	        implementation 'com.github.bsimsek159:CountDownTimerView:0.1.8'
 	}
 
 ## USAGE
