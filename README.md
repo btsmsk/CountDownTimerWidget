@@ -1,4 +1,4 @@
-# CountDownTimerView
+# CountDownTimerWidget
 Count Down timer UI component with progress bar
 
 <img width="500" alt="Screenshot_1563611909" src="https://user-images.githubusercontent.com/25201275/61576994-32a11f00-aaea-11e9-8033-f3465c6f3638.png">
