@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="font_large">24sp</dimen>
-    <dimen name="font_xlarge">32sp</dimen>
-    <dimen name="font_xxlarge">36sp</dimen>
+    <dimen name="time_font_xs">8sp</dimen>
+    <dimen name="time_font_s">10sp</dimen>
+    <dimen name="time_font_m">12sp</dimen>
+    <dimen name="time_font_l">24sp</dimen>
+    <dimen name="time_font_xl">32sp</dimen>
+    <dimen name="time_font_xxl">36sp</dimen>
 </resources>

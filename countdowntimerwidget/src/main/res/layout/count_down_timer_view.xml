@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="2dp">
 
     <ProgressBar
             android:id="@+id/progressBarCircle"
@@ -15,37 +15,40 @@
             android:layout_centerInParent="true"
             android:background="@drawable/drawable_progress_inner_circle"
             android:indeterminate="false"
+            android:layoutDirection="ltr"
+            android:minWidth="32dp"
+            android:minHeight="32dp"
             android:progressDrawable="@drawable/drawable_progress_outer_circle"
             android:rotation="-90"
-            android:layoutDirection="ltr"
-            tools:progress="70"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:progress="70" />
 
     <TextView
             android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            tools:text="190"
-            tools:textSize="20sp"
-            tools:textColor="@color/greyDark"
-            app:layout_constraintTop_toTopOf="@+id/progressBarCircle"
             app:layout_constraintBottom_toBottomOf="@+id/progressBarCircle"
+            app:layout_constraintEnd_toEndOf="@+id/progressBarCircle"
             app:layout_constraintStart_toStartOf="@+id/progressBarCircle"
-            app:layout_constraintEnd_toEndOf="@+id/progressBarCircle"/>
+            app:layout_constraintTop_toTopOf="@+id/progressBarCircle"
+            tools:text="190"
+            tools:textColor="@color/colorGreyDark"
+            tools:textSize="12sp" />
 
     <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            tools:text="description"
-            tools:textColor="@color/greyDark"
-            tools:textSize="10sp"
-            app:layout_constraintTop_toBottomOf="@+id/progressBarCircle"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarCircle"
+            tools:text="description"
+            tools:textColor="@color/colorGreyDark"
+            tools:textSize="22sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
