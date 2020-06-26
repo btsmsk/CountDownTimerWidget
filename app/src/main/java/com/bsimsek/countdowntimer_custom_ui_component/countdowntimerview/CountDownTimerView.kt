@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -22,7 +23,6 @@ data class CountDownTimerViewAttributeData(
     val descriptionTextSize: Float? = null,
     val innerCircleColor: Int? = null,
     val outerCircleColor: Int? = null,
-    val ratio: Float? = null,
     val clockwise: Boolean? = null,
     val animation: Boolean? = null
 )
@@ -49,23 +49,25 @@ private fun readAttributes(
             timeTextSize =
                 getDimension(
                     R.styleable.CountDownTimerView_timeTextSize,
-                    resources.getDimension(R.dimen.font_xxlarge)
+                    resources.getDimension(R.dimen.time_font_m)
                 )
             timeTextColor =
                 getResourceId(R.styleable.CountDownTimerView_timeTextColor, R.color.colorPrimary)
             descriptionText = getString(R.styleable.CountDownTimerView_descriptionText)
             descriptionTextColor =
-                getResourceId(R.styleable.CountDownTimerView_descriptionTextColor, R.color.greyDark)
+                getResourceId(
+                    R.styleable.CountDownTimerView_descriptionTextColor,
+                    R.color.colorGreyDark
+                )
             descriptionTextSize =
                 getDimension(
                     R.styleable.CountDownTimerView_descriptionTextSize,
-                    resources.getDimension(R.dimen.font_large)
+                    resources.getDimension(R.dimen.time_font_l)
                 )
             innerCircleColor =
-                getResourceId(R.styleable.CountDownTimerView_innerCircleColor, R.color.grey)
+                getResourceId(R.styleable.CountDownTimerView_innerCircleColor, R.color.colorGrey)
             outerCircleColor =
                 getResourceId(R.styleable.CountDownTimerView_outerCircleColor, R.color.colorPrimary)
-            ratio = getFloat(R.styleable.CountDownTimerView_ratio, 3f)
             clockwise = getBoolean(R.styleable.CountDownTimerView_clockwise, false)
             animation = getBoolean(R.styleable.CountDownTimerView_animation, true)
         }
@@ -78,7 +80,6 @@ private fun readAttributes(
             descriptionTextSize,
             innerCircleColor,
             outerCircleColor,
-            ratio,
             clockwise,
             animation
         )
@@ -125,10 +126,13 @@ class CountDownTimerView @JvmOverloads constructor(
         val data = readAttributes(context, attrs)
 
         data.apply {
-            textViewDescription.apply {
-                text = descriptionText
-                setTextColor(ContextCompat.getColor(context, descriptionTextColor!!))
-                textSize = descriptionTextSize!! / resources.displayMetrics.scaledDensity
+            if (!descriptionText.isNullOrEmpty()) {
+                textViewDescription.apply {
+                    text = descriptionText
+                    setTextColor(ContextCompat.getColor(context, descriptionTextColor!!))
+                    textSize = descriptionTextSize!! / resources.displayMetrics.scaledDensity
+                    visibility = View.VISIBLE
+                }
             }
 
             textViewTime.apply {
@@ -151,9 +155,6 @@ class CountDownTimerView @JvmOverloads constructor(
                             outerCircleColor!!
                         ), BlendModeCompat.SRC_ATOP
                     )
-                ratio?.let {
-                    setRatio(it / resources.displayMetrics.scaledDensity)
-                }
             }
 
             if (clockwise!!) {
@@ -273,7 +274,12 @@ class CountDownTimerView @JvmOverloads constructor(
      * To set the description text that under the timer view
      */
     fun setDescriptionText(descriptionText: String?) {
-        textViewDescription.text = descriptionText
+        textViewDescription.apply {
+            descriptionText?.let {
+                this.text = it
+                this.visibility = View.VISIBLE
+            }
+        }
     }
 
     /*
@@ -321,22 +327,13 @@ class CountDownTimerView @JvmOverloads constructor(
      * To change the color of the progress drawable
      */
     fun setProgressOuterCircleColor(outerCircleColor: Int) {
-        progressBarCircle.progressDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-            ContextCompat.getColor(
-                context,
-                outerCircleColor
-            ), BlendModeCompat.SRC_ATOP
-        )
-    }
-
-    /*
-    * Set progress bar ratio
-    */
-    fun setRatio(ratio: Float) {
-        progressBarCircle.apply {
-            this.scaleX = ratio
-            this.scaleY = ratio
-        }
+        progressBarCircle.progressDrawable.colorFilter =
+            BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                ContextCompat.getColor(
+                    context,
+                    outerCircleColor
+                ), BlendModeCompat.SRC_ATOP
+            )
     }
 
     override fun onDetachedFromWindow() {

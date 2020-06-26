@@ -10,7 +10,6 @@
         <attr name="innerCircleColor" format="integer"/>
         <attr name="outerCircleThickness" format="dimension"/>
         <attr name="outerCircleColor" format="integer"/>
-        <attr name="ratio" format="float"/>
         <attr name="clockwise" format="boolean"/>
         <attr name="animation" format="boolean"/>
     </declare-styleable>
