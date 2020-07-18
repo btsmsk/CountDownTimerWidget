@@ -251,6 +251,7 @@ class CountDownTimerWidget @JvmOverloads constructor(
      */
     fun stopTimer() {
         timer.cancel()
+        _onCountDownTimerStopped?.invoke()
     }
 
     /*
