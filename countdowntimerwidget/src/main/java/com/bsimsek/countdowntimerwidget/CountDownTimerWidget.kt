@@ -107,6 +107,7 @@ class CountDownTimerWidget @JvmOverloads constructor(
     private var _onCountDownTimerStarted: (() -> Unit)? = null
     private var _onCountDownTimerStopped: (() -> Unit)? = null
     private var _onCountDownTimerRunning: ((remainingTime: Long) -> Unit)? = null
+    private var isRunning = false
 
     init {
         initViews()
@@ -237,13 +238,15 @@ class CountDownTimerWidget @JvmOverloads constructor(
                 remainingTimeSecond = millisUntilFinished / 1000
                 textViewTime.text = (remainingTimeSecond).toString()
                 _onCountDownTimerRunning?.invoke(remainingTimeSecond)
+                isRunning = true
                 if (animationAllowed) {
                     setProgressAnimate(progressBarCircle, millisUntilFinished.toInt())
                 } else {
                     progressBarCircle.progress = (millisUntilFinished).toInt()
                 }
             }
-        }.start()
+        }
+        if(!isRunning) timer.start()
     }
 
     /*
@@ -252,6 +255,7 @@ class CountDownTimerWidget @JvmOverloads constructor(
     fun stopTimer() {
         timer.cancel()
         _onCountDownTimerStopped?.invoke()
+        isRunning = false
     }
 
     /*
@@ -280,6 +284,13 @@ class CountDownTimerWidget @JvmOverloads constructor(
         if (animationAllowed) {
             animation.cancel()
         }
+    }
+
+    /*
+    * Return timer is running or not
+    */
+    fun isRunning(): Boolean {
+        return isRunning
     }
 
     /*
