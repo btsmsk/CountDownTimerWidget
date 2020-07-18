@@ -53,7 +53,10 @@ private fun readAttributes(
                 getResourceId(R.styleable.CountDownTimerWidget_timeTextColor, R.color.colorPrimary)
             descriptionText = getString(R.styleable.CountDownTimerWidget_descriptionText)
             descriptionTextColor =
-                getResourceId(R.styleable.CountDownTimerWidget_descriptionTextColor, R.color.colorGreyDark)
+                getResourceId(
+                    R.styleable.CountDownTimerWidget_descriptionTextColor,
+                    R.color.colorGreyDark
+                )
             descriptionTextSize =
                 getDimension(
                     R.styleable.CountDownTimerWidget_descriptionTextSize,
@@ -62,7 +65,10 @@ private fun readAttributes(
             innerCircleColor =
                 getResourceId(R.styleable.CountDownTimerWidget_innerCircleColor, R.color.colorGrey)
             outerCircleColor =
-                getResourceId(R.styleable.CountDownTimerWidget_outerCircleColor, R.color.colorPrimary)
+                getResourceId(
+                    R.styleable.CountDownTimerWidget_outerCircleColor,
+                    R.color.colorPrimary
+                )
             clockwise = getBoolean(R.styleable.CountDownTimerWidget_clockwise, false)
             animation = getBoolean(R.styleable.CountDownTimerWidget_animation, true)
         }
@@ -245,12 +251,13 @@ class CountDownTimerWidget @JvmOverloads constructor(
      */
     fun stopTimer() {
         timer.cancel()
+        timer.onFinish()
     }
 
     /*
      * Stop and restart count down timer
      */
-    fun resetTimer() {
+    fun restartTimer() {
         stopTimer()
         if (animationAllowed) {
             animation.cancel()
@@ -263,6 +270,16 @@ class CountDownTimerWidget @JvmOverloads constructor(
             _onCountDownTimerStopped,
             _onCountDownTimerRunning
         )
+    }
+
+    /*
+    * Reset the count down timer
+    */
+    fun resetTimer() {
+        stopTimer()
+        if (animationAllowed) {
+            animation.cancel()
+        }
     }
 
     /*
