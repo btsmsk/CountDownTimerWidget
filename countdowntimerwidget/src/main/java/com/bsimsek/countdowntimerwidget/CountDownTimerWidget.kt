@@ -230,8 +230,8 @@ class CountDownTimerWidget @JvmOverloads constructor(
             override fun onFinish() {
                 textViewTime.text = "0"
                 setProgressBarValues()
-                _onCountDownTimerStopped?.invoke()
                 stopTimer()
+                _onCountDownTimerStopped?.invoke()
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -254,7 +254,6 @@ class CountDownTimerWidget @JvmOverloads constructor(
      */
     fun stopTimer() {
         timer.cancel()
-        _onCountDownTimerStopped?.invoke()
         isRunning = false
     }
 
